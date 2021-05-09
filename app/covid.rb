@@ -1,19 +1,20 @@
 require File.expand_path('../base.rb', __FILE__)
 class Covid
-  PINCODES = [110044, 110019, 110062, 226016].freeze
-
+  NEXT_LINE = "\u0085".encode('utf-8')
   def self.empty_slots
-    empty_slots = []
+    empty_slots = ""
 
     districts.each do |district|
-      p district
-      slots(Time.now.strftime('%d-%m-&%Y'), district[:district_id]).each do |slot|
+      empty_slots += "District: #{district[:district_name]} #{NEXT_LINE}Slots: #{NEXT_LINE}"
+      empty_slots_in_district = []
+      slots((DateTime.now).strftime('%d-%m-&%Y'), district[:district_id]).each do |slot|
         sessions_available = Center.new(slot).available_sessions
-        empty_slots << sessions_available if sessions_available
+        empty_slots_in_district << sessions_available if sessions_available
       end
+      empty_slots += empty_slots_in_district == [] ? "No slots available" : empty_slots_in_district.join(NEXT_LINE)
+      empty_slots += NEXT_LINE
     end
-    telegram_message = empty_slots == [] ? 'No empty slots' : empty_slots.join('\n')
-    Telegrambot.send_message(telegram_message)
+    Telegrambot.send_message(empty_slots)
   end
 
   def self.slots(date, district_id)
