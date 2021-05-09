@@ -14,7 +14,7 @@ class Center < Base
     sessions.each do |session|
       if session.available?
         puts name, session.available_date, session.available_capacity
-        available_sessions << [name, session.available_date, session.available_capacity].join(' ')
+        available_sessions << [name, address, session.available_date, session.available_capacity].join(' ')
       end
     end
     return if available_sessions == []

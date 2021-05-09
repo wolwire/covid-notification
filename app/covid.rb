@@ -10,7 +10,7 @@ class Covid
         empty_slots << sessions_available if sessions_available
       end
     end
-    telegram_message = empty_slots == [] ? 'No empty slots' : empty_slots.join(' ')
+    telegram_message = empty_slots == [] ? 'No empty slots' : empty_slots.join('\n')
     Telegrambot.send_message(telegram_message)
   end
 
