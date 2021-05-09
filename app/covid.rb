@@ -4,8 +4,10 @@ class Covid
 
   def self.empty_slots
     empty_slots = []
-    PINCODES.each do |pincode|
-      slots(Time.now.strftime('%d-%m-&%Y'), pincode).each do |slot|
+
+    districts.each do |district|
+      p district
+      slots(Time.now.strftime('%d-%m-&%Y'), district[:district_id]).each do |slot|
         sessions_available = Center.new(slot).available_sessions
         empty_slots << sessions_available if sessions_available
       end
@@ -14,10 +16,17 @@ class Covid
     Telegrambot.send_message(telegram_message)
   end
 
-  def self.slots(date, pincode)
+  def self.slots(date, district_id)
     headers = {}
     headers['user-agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
-    response = HTTParty.get("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=#{pincode}&date=#{date}", headers: headers)
+    response = HTTParty.get("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=#{district_id}&date=#{date}", headers: headers)
     JSON.parse(response.body, symbolize_names: true)[:centers]
+  end
+
+  def self.districts
+    headers = {}
+    headers['user-agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
+    response = HTTParty.get('https://cdn-api.co-vin.in/api/v2/admin/location/districts/9', headers: headers)
+    JSON.parse(response.body, symbolize_names: true)[:districts]
   end
 end
