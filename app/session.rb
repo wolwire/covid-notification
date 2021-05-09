@@ -8,10 +8,11 @@ class Session < Base
 
   def available_date
     return unless available?
-    self.date
+
+    date
   end
 
   def available?
-    (self.available_capacity.to_i>0) && (self.min_age_limit == 18)
+    available_capacity.to_i.positive? && (min_age_limit == 18)
   end
 end
