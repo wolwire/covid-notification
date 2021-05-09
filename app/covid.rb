@@ -10,6 +10,9 @@ class Covid
         empty_slots << sessions_available if sessions_available
       end
     end
+    telegram_message = 'No empty slots'
+    Telegrambot.send_message(telegram_message) and return telegram_message if empty_slots == []
+    Telegrambot.send_message(empty_slots.join(' '))
   end
 
   def self.slots(date, pincode)
