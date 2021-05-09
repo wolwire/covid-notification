@@ -1,2 +1,0 @@
-TWILIO = Hash.new
-TWILIO[:]
