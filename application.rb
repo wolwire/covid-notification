@@ -2,6 +2,7 @@ require 'httparty'
 require 'json'
 require 'rubygems'
 require 'telegram/bot'
+require 'byebug'
 
 class Application
   def initialize
@@ -13,7 +14,7 @@ class Application
   def send_notification
     $settings['REPEAT_TIMES'].times do
       Covid.empty_slots
-      sleep 15
+      sleep $settings['SLEEP_TIME']
     end
   end
 
@@ -25,7 +26,7 @@ class Application
       chat: {
         token: $settings['TELEGRAM_TOKEN'],
         username: 'covid_report_trial_bot'
-      },
+      }
     }
   end
 
