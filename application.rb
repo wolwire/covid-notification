@@ -11,7 +11,10 @@ class Application
   end
 
   def send_notification
-    Covid.empty_slots
+    $settings['REPEAT_TIMES'].times do
+      Covid.empty_slots
+      sleep 15
+    end
   end
 
   private

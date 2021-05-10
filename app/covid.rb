@@ -2,8 +2,7 @@ require File.expand_path('../base.rb', __FILE__)
 class Covid
   NEXT_LINE = "\u0085".encode('utf-8')
   def self.empty_slots
-    empty_slots = ""
-
+    empty_slots = ''
     districts.each do |district|
       empty_slots += "District: #{district[:district_name]} #{NEXT_LINE}Slots: #{NEXT_LINE}"
       empty_slots_in_district = []
@@ -19,6 +18,7 @@ class Covid
 
   def self.slots(date, district_id)
     headers = {}
+    headers['authorization'] = $settings["BEARER_TOKEN"]
     headers['user-agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
     response = HTTParty.get("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=#{district_id}&date=#{date}", headers: headers)
     JSON.parse(response.body, symbolize_names: true)[:centers]
