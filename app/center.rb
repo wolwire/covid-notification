@@ -16,7 +16,7 @@ class Center < Base
     sessions.each do |session|
       if session.available?
         # puts name, session.available_date, session.available_capacity
-        available_sessions += [name, address, session.available_date, session.available_capacity].join(NEXT_LINE)
+        available_sessions += ['*Name*: ',name, '*Address*: ', address, '*Date*:', session.available_date, '*Capacity*:',session.available_capacity].join(NEXT_LINE)
       end
     end
     return if available_sessions == ''

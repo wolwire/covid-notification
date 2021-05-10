@@ -5,7 +5,7 @@ class Covid
     empty_slots = ""
 
     districts.each do |district|
-      empty_slots += "District: #{district[:district_name]} #{NEXT_LINE}Slots: #{NEXT_LINE}"
+      empty_slots += "*District*: *#{district[:district_name]}* #{NEXT_LINE}*Slots*: #{NEXT_LINE}"
       empty_slots_in_district = []
       slots((DateTime.now).strftime('%d-%m-&%Y'), district[:district_id]).each do |slot|
         sessions_available = Center.new(slot).available_sessions
